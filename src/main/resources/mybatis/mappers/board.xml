@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<!-- 쿼리문 작성 -->
+	
+	<!-- personVo 매핑 -->
+	<!-- 
+	<resultMap id="resultMapPersonVo" type="PersonVo" >
+		<result column="person_id" property="personId"></result>
+		<result column="name" property="name"></result>
+		<result column="hp" property="hp"></result>
+		<result column="company" property="company"></result>
+	</resultMap>
+	 -->
+	 
+	 <!-- 전체리스트 -->
+	<select id="selectList" resultType="BoardVo">
+		<![CDATA[
+			select b.no, b.user_no, b.title, b.content, b.hit, b.reg_date,
+				   u.name
+			from board b, users u
+			where b.user_no = u.no
+		]]>
+	</select>
+	
+	<!-- 1명 데이터 가져오기 -->
+	<select id="selectOne" parameterType="int" resultType="BoardVo">
+		<![CDATA[
+			select b.no, b.user_no, b.title, b.content, b.hit, b.reg_date,
+				   u.name
+			from board b, users u
+			where b.user_no = u.no
+			and b.no = #{ no }
+		]]>
+	</select>
+	
+	<!-- 1명 데이터 가져오기2 -->
+	<select id="selectOne2" parameterType="int" resultType="map">
+		<![CDATA[
+			select no, title, content, hit, reg_date, user_no
+			from board
+			where no= #{ no }
+		]]>
+	</select>
+	 
+	<!-- 추가 insert -->
+	<insert id="boardInsert" parameterType="BoardVo">
+		<![CDATA[
+			insert into board
+			values (null, #{ title }, #{ content }, 0, now(), #{ user_no })
+		]]>
+	</insert>
+	
+	<!-- 추가2 map사용 insert2 -->
+	<insert id="boardInsert2" parameterType="map">
+		<![CDATA[
+			insert into board
+			values (null, #{ title }, #{ content }, 0, now(), #{ user_no })
+		]]>
+	</insert>
+	
+	<!-- 수정 update -->
+	<update id="boardUpdate" parameterType="BoardVo">
+		<![CDATA[
+			update board
+			set title = #{ title },
+			    content = #{ content }
+			where no = #{ no }
+		]]>
+	</update>
+	
+	<!-- 삭제 delete -->
+	<delete id="boardDelete" parameterType="int">
+		<![CDATA[
+			delete from board where no = #{ no }
+		]]>
+	</delete>
+	
+	
+	 
+	
+	
+	
+ 
+
+
+</mapper>

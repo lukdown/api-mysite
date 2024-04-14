@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+
+	<!-- 쿼리문 작성 -->
+
+	<!-- personVo 매핑 -->
+	<!-- 
+	<resultMap id="resultMapPersonVo" type="PersonVo">
+		<result column="person_id" property="personId"></result>
+		<result column="name" property="name"></result>
+		<result column="hp" property="hp"></result>
+		<result column="company" property="company"></result>
+	</resultMap>
+	 -->
+	<!-- 추가 insert -->
+	<insert id="userInsert" parameterType="UserVo">
+		<![CDATA[
+			insert into users
+			value (null, #{ id }, #{ password }, #{ name }, #{ gender })
+		]]>
+	</insert>
+	 
+	 <!-- 회원정보수정 -->
+	<update id="update" parameterType="UserVo">
+		<![CDATA[ 
+			update users
+			set name = #{name},
+				password = #{password},
+				gender = #{gender}
+			where no = #{no}
+		]]>
+	</update>
+	 
+	 <!-- 회원정보수정폼 -->
+	 <!-- no로 한명데이터 가져오기(회원정보수정 폼) -->
+	<select id="selectOneByNo" parameterType="int" resultType="UserVo">
+		<![CDATA[ 
+			select 	no, 
+					id,
+					name,
+					password,
+					gender
+			from users
+			where no = #{no}
+		]]>
+	</select>
+
+	<!-- 로그인 -->
+	<select id="selectByIdPw" parameterType="UserVo" resultType="UserVo">
+		<![CDATA[
+			select no, name
+			from users
+			where id = #{ id }
+			and password = #{ password }
+		]]>
+	</select>
+
+	
+
+
+</mapper>
